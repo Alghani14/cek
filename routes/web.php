@@ -32,9 +32,8 @@ Route::middleware('auth')->group(function () {
         // employees
         Route::resource('/employees', EmployeeController::class)->only(['index', 'create']);
         Route::get('/employees/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
-        // holidays (hari libur)
-        Route::resource('/holidays', HolidayController::class)->only(['index', 'create']);
-        Route::get('/holidays/edit', [HolidayController::class, 'edit'])->name('holidays.edit');
+
+        
         // attendances (absensi)
         Route::resource('/attendances', AttendanceController::class)->only(['index', 'create']);
         Route::get('/attendances/edit', [AttendanceController::class, 'edit'])->name('attendances.edit');
@@ -44,6 +43,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/presences/qrcode', [PresenceController::class, 'showQrcode'])->name('presences.qrcode');
         Route::get('/presences/qrcode/download-pdf', [PresenceController::class, 'downloadQrCodePDF'])->name('presences.qrcode.download-pdf');
         Route::get('/presences/{attendance}', [PresenceController::class, 'show'])->name('presences.show');
+        
         // not present data
         Route::get('/presences/{attendance}/not-present', [PresenceController::class, 'notPresent'])->name('presences.not-present');
         Route::post('/presences/{attendance}/not-present', [PresenceController::class, 'notPresent']);
@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
         // employees permissions
 
         Route::get('/presences/{attendance}/permissions', [PresenceController::class, 'permissions'])->name('presences.permissions');
+        Route::get('/presences/{attendance}/aktivitas', [PresenceController::class, 'aktivitas'])->name('presences.aktivitas');
     });
 
     Route::middleware('role:user')->name('home.')->group(function () {
@@ -63,6 +64,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/absensi/{attendance}', [HomeController::class, 'show'])->name('show');
         Route::get('/absensi/{attendance}/permission', [HomeController::class, 'permission'])->name('permission');
+        Route::get('/absensi/{attendance}/holiday', [HomeController::class, 'holiday'])->name('holiday');
     });
 
     Route::delete('/logout', [AuthController::class, 'logout'])->name('auth.logout');

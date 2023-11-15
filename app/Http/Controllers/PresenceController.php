@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Aktivitas;
 use App\Models\Attendance;
 use App\Models\Permission;
 use App\Models\Presence;
@@ -110,6 +110,25 @@ class PresenceController extends Controller
 
         return view('presences.permissions', [
             "title" => "Data Karyawan Izin",
+            "attendance" => $attendance,
+            "permissions" => $permissions,
+            "date" => $byDate
+        ]);
+    }
+
+    public function aktivitas(Attendance $attendance)
+    {
+        $byDate = now()->toDateString();
+        if (request('display-by-date'))
+            $byDate = request('display-by-date');
+
+        $permissions = Aktivitas::query()
+            ->with(['user', 'user.position'])
+            ->where('attendance_id', $attendance->id)
+            ->get();
+
+        return view('presences.aktivitas', [
+            "title" => "Data Aktivitas",
             "attendance" => $attendance,
             "permissions" => $permissions,
             "date" => $byDate

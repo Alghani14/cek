@@ -18,10 +18,10 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-6 mb-3 mb-md-0">
-                <h5 class="card-title">{{ $attendance->title }}</h5>
+                <h5 class="card-title">Data Aktivitas</h5>
                 <h6 class="card-subtitle mb-2 text-muted">{{ $attendance->description }}</h6>
                 <div class="d-flex align-items-center gap-2">
-                    <span href="" class="badge text-bg-warning">Izin</span>
+                    <span href="" class="badge text-bg-warning">Data Aktivitas</span>
                 </div>
             </div>
             <div class="col-md-6">
@@ -62,7 +62,7 @@
                     <th scope="col">Nama Karyawan</th>
                     <th scope="col">Kontak</th>
                     <th scope="col">Posisi</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">Aktivitas</th>
                 </tr>
             </thead>
             <tbody>
@@ -76,28 +76,15 @@
                         <a href="tel:{{ $permission->user->phone }}">{{ $permission->user->phone }}</a>
                     </td>
                     <td>{{ $permission->user->position->name }}</td>
-                    @if ($permission->is_accepted)
-                    <td>
-                        <span class="badge text-bg-success border-0">Sudah Diterima</span>
+                    
+                    <td> 
+                       
                         <button class="badge text-bg-info border-0 permission-detail-modal-triggers"
                             data-permission-id="{{ $permission->id }}" data-bs-toggle="modal"
                             data-bs-target="#permission-detail-modal">Lihat
-                            Alasan</button>
+                            aktivitas</button>
                     </td>
-                    @else
-                    <td>
-                        <form action="{{ route('presences.acceptPermission', $attendance->id) }}" method="post">
-                            @csrf
-                            <input type="hidden" name="user_id" value="{{ $permission->user->id }}">
-                            <input type="hidden" name="permission_date" value="{{ $permission->permission_date }}">
-                            <button class="badge text-bg-primary border-0" type="submit">Terima</button>
-                        </form>
-                        <button class="badge text-bg-info border-0 permission-detail-modal-triggers"
-                            data-permission-id="{{ $permission->id }}" data-bs-toggle="modal"
-                            data-bs-target="#permission-detail-modal">Lihat
-                            Alasan</button>
-                    </td>
-                    @endif
+                 
                 </tr>
                 @endforeach
             </tbody>
@@ -110,32 +97,19 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Detail Izin</h5>
+                <h5 class="modal-title">Detail Aktivitas</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <ul>
-                    <li>Judul Izin : <span id="permission-judul">{{ $permission->judul }}</span></li>
-                    <li>Keterangan Izin : <p id="permission-deskripsi">{{ $permission->deskripsi }}</p></li>
-                    <li>Bukti : <a href="{{ asset('storage/' . $permission->image) }}" download>
-                    <img src="{{ asset('storage/' . $permission->image) }}" style="width:150px; height:150px;">
-                    </a></li>
-
-                    <li>Tanggal Awal : <span id="permission-start_date">{{ $permission->start_date }}</span></li>
-                    <li>Tanggal Akhir : <span id="permission-end_date">{{ $permission->end_date }}</span></li>
-                    <li>Total Izin : <span id="permission-total_izin">{{ $permission->total_izin }}</span>
+                    <li>Aktivitas : <span id="permission-title">{{ $permission->aktivitas }}</span></li>
                     </li>
                 </ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                <form action="{{ route('presences.acceptPermission', $attendance->id) }}" method="post">
-                    @csrf
-                    <input type="hidden" name="user_id" value="{{ $permission->user->id }}">
-                    <input type="hidden" name="permission_date" value="{{ $permission->permission_date }}">
-                    <button class="btn btn-primary border-0" type="submit">Terima</button>
-                </form>
             </div>
+       
         </div>
     </div>
 </div>
@@ -148,6 +122,4 @@
     const permissionUrl = "{{ route('api.permissions.show') }}";
 </script>
 <script src="{{ asset('js/presences/permissions.js') }}"></script>
-
-
 @endpush
